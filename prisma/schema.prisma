@@ -13,3 +13,67 @@ datasource db {
   url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
+
+model Expense {
+  id                  String             @id @default(uuid()) @map("id")
+  description         String             @map("description")
+  amount              Float              @map("amount")
+  userId              String             @map("user_id")
+  user                User               @relation(fields: [userId], references: [id])
+  type                ExpenseType        @map("type") // Debit or Credit
+  paymentMethodId     String             @map("payment_method_id")
+  payment_method      PaymentMethod      @relation(fields: [paymentMethodId], references: [id])
+  paymentCategory     PaymentCategory    @map("paymentCategory") // e.g., Personal, Shared
+  personalPortion     Float?             @map("personal_portion") // The portion of the amount that is personal (for shared expenses)
+  isRecurring         Boolean            @map("is_recurring")
+  recurringIntervalId String?            @map("recurring_interval_id")
+  recurringInterval   RecurringInterval? @relation(fields: [recurringIntervalId], references: [id])
+  created_at          DateTime           @default(now()) @map("created_at")
+  updated_at          DateTime           @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@map("expenses")
+}
+
+enum ExpenseType {
+  DEBIT
+  CREDIT
+}
+
+enum PaymentCategory {
+  PERSONAL
+  SHARED
+}
+
+model PaymentMethod {
+  id       String    @id @default(uuid()) @map("id")
+  name     String    @map("name")
+  userId   String    @map("user_id")
+  user     User      @relation(fields: [userId], references: [id])
+  expenses Expense[] // One-to-many relation with Expense
+
+  @@map("payment_methods")
+}
+
+model RecurringInterval {
+  id       String    @id @default(uuid()) @map("id")
+  interval String    @map("interval") // e.g., Weekly, Bi-Weekly, Monthly, Annually
+  userId   String    @map("user_id")
+  user     User      @relation(fields: [userId], references: [id])
+  expenses Expense[] // One-to-many relation with Expense
+
+  @@map("recurring_intervals")
+}
+
+model User {
+  id                 String              @id @default(uuid()) @map("id")
+  authId             String              @unique @map("auth_id") // ID from auth providers
+  email              String              @unique @map("email")
+  givenName          String?             @map("given_name")
+  familyName         String?             @map("family_name")
+  expenses           Expense[] // One-to-many relation with Expense
+  paymentMethods     PaymentMethod[] // One-to-many relation with PaymentMethod
+  recurringIntervals RecurringInterval[] // One-to-many relation with RecurringInterval
+
+  @@map("users")
+}
