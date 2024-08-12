@@ -1,9 +1,11 @@
 import db from "@/utils/db";
 import { getBaseUrl } from "@/utils/url";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export const dynamic = "force-dynamic";
+
+export async function GET() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
