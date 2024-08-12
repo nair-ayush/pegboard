@@ -1,9 +1,9 @@
 import db from "@/utils/db";
 import { getBaseUrl } from "@/utils/url";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
