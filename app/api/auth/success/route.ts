@@ -8,7 +8,7 @@ export async function GET() {
   const user = await getUser();
 
   if (!user || user == null || !user.id)
-    throw new Error("something went wrong with authentication" + user);
+    throw new Error("something went wrong with authentication");
 
   let dbUser = await db.user.findUnique({
     where: { authId: user.id },
