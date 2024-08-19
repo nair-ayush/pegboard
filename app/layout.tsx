@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/shared";
+import { Footer, Navbar } from "@/components/shared";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import type { Metadata, Viewport } from "next";
@@ -43,13 +43,14 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-background font-sans antialiased flex flex-col",
           inter.variable
         )}
       >
         <Providers>
           <Navbar />
-          {children}
+          <main className="flex-grow">{children}</main>
+          <Footer />
         </Providers>
       </body>
     </html>
