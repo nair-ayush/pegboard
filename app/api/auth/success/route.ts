@@ -1,5 +1,6 @@
+import db from "@/lib/db";
 import { getBaseUrl } from "@/lib/url";
-import db from "@/utils/db";
+
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
 
