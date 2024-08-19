@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { getCurrentFolderNameFromPath } from "../utils/path";
+import { getCurrentFolderNameFromPath } from "../lib/path";
 import Home from "./page";
 
 describe(getCurrentFolderNameFromPath(__dirname), () => {
